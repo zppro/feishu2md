@@ -14,15 +14,17 @@ import (
 
 type Client struct {
 	larkClient *lark.Lark
+	options    []lark.MethodOptionFunc
 }
 
-func NewClient(appID, appSecret, domain string) *Client {
+func NewClient(appID, appSecret, userAccessToken, domain string) *Client {
 	return &Client{
 		larkClient: lark.New(
 			lark.WithAppCredential(appID, appSecret),
 			lark.WithOpenBaseURL("https://open."+domain),
 			lark.WithTimeout(60*time.Second),
 		),
+		options: []lark.MethodOptionFunc{lark.WithUserAccessToken(userAccessToken)},
 	}
 }
 
@@ -68,7 +70,7 @@ func (c *Client) DownloadImageRaw(ctx context.Context, imgToken, imgDir string) 
 func (c *Client) GetDocxContent(ctx context.Context, docToken string) (*lark.DocxDocument, []*lark.DocxBlock, error) {
 	resp, _, err := c.larkClient.Drive.GetDocxDocument(ctx, &lark.GetDocxDocumentReq{
 		DocumentID: docToken,
-	})
+	}, c.options...)
 	if err != nil {
 		return nil, nil, err
 	}
@@ -83,7 +85,7 @@ func (c *Client) GetDocxContent(ctx context.Context, docToken string) (*lark.Doc
 		resp2, _, err := c.larkClient.Drive.GetDocxBlockListOfDocument(ctx, &lark.GetDocxBlockListOfDocumentReq{
 			DocumentID: docx.DocumentID,
 			PageToken:  pageToken,
-		})
+		}, c.options...)
 		if err != nil {
 			return docx, nil, err
 		}
@@ -99,7 +101,7 @@ func (c *Client) GetDocxContent(ctx context.Context, docToken string) (*lark.Doc
 func (c *Client) GetWikiNodeInfo(ctx context.Context, token string) (*lark.GetWikiNodeRespNode, error) {
 	resp, _, err := c.larkClient.Drive.GetWikiNode(ctx, &lark.GetWikiNodeReq{
 		Token: token,
-	})
+	}, c.options...)
 	if err != nil {
 		return nil, err
 	}

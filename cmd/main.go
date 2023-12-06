@@ -39,10 +39,15 @@ func main() {
 						Value: "",
 						Usage: "Set app secret for the OPEN API",
 					},
+					&cli.StringFlag{
+						Name:  "userAccessToken",
+						Value: "",
+						Usage: "Set user access token for the OPEN API",
+					},
 				},
 				Action: func(ctx *cli.Context) error {
 					return handleConfigCommand(
-						ctx.String("appId"), ctx.String("appSecret"),
+						ctx.String("appId"), ctx.String("appSecret"), ctx.String("userAccessToken"),
 					)
 				},
 			},

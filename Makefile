@@ -1,6 +1,12 @@
 .DEFAULT_GOAL := build
 HAS_UPX := $(shell command -v upx 2> /dev/null)
 
+dev:
+	go run cmd/*.go -- https://r3zmw82jiq.feishu.cn/docx/doxcnmQCdbj8vYnNv2B1fE5t4Ag
+
+config-uat:
+	go run cmd/*.go -- config --userAccessToken u-eAPhLvVYBeSp9JwesltuFTgk3w601kj3iMG0l5S02dUo
+
 .PHONY: build
 build:
 	go build -ldflags="-X main.version=v2-`git rev-parse --short HEAD`" -o ./feishu2md cmd/*.go

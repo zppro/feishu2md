@@ -36,6 +36,7 @@ func downloadHandler(c *gin.Context) {
 	config := core.NewConfig(
 		os.Getenv("FEISHU_APP_ID"),
 		os.Getenv("FEISHU_APP_SECRET"),
+		os.Getenv("FEISHU_USER_ACCESS_TOKEN"),
 	)
 
 	domain := matchResult[1]
@@ -45,7 +46,7 @@ func downloadHandler(c *gin.Context) {
 	ctx := context.Background()
 
 	client := core.NewClient(
-		config.Feishu.AppId, config.Feishu.AppSecret, domain,
+		config.Feishu.AppId, config.Feishu.AppSecret, config.Feishu.UserAccessToken, domain,
 	)
 
 	parser := core.NewParser(ctx)

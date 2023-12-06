@@ -250,7 +250,7 @@ func (p *Parser) ParseDocxTextElementTextRun(tr *lark.DocxTextElementTextRun) st
 	buf := new(strings.Builder)
 	postWrite := ""
 	if style := tr.TextElementStyle; style != nil {
-		useHTMLTags := NewConfig("", "").Output.UseHTMLTags
+		useHTMLTags := NewConfig("", "", "").Output.UseHTMLTags
 		if p.ctx.Value("output") != nil {
 			useHTMLTags = p.ctx.Value("output").(OutputConfig).UseHTMLTags
 		}

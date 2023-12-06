@@ -33,7 +33,7 @@ func handleUrlArgument(url string) error {
 	ctx := context.WithValue(context.Background(), "output", config.Output)
 
 	client := core.NewClient(
-		config.Feishu.AppId, config.Feishu.AppSecret, domain,
+		config.Feishu.AppId, config.Feishu.AppSecret, config.Feishu.UserAccessToken, domain,
 	)
 
 	// for a wiki page, we need to renew docType and docToken first

@@ -8,14 +8,14 @@ import (
 	"github.com/Wsine/feishu2md/utils"
 )
 
-func handleConfigCommand(appId, appSecret string) error {
+func handleConfigCommand(appId, appSecret, userAccessToken string) error {
 	configPath, err := core.GetConfigFilePath()
 	if err != nil {
 		return err
 	}
 	fmt.Println("Configuration file on: " + configPath)
 	if _, err := os.Stat(configPath); os.IsNotExist(err) {
-		config := core.NewConfig(appId, appSecret)
+		config := core.NewConfig(appId, appSecret, userAccessToken)
 		if err = config.WriteConfig2File(configPath); err != nil {
 			return err
 		}
@@ -31,7 +31,11 @@ func handleConfigCommand(appId, appSecret string) error {
 		if appSecret != "" {
 			config.Feishu.AppSecret = appSecret
 		}
-		if appId != "" || appSecret != "" {
+		if userAccessToken != "" {
+			config.Feishu.UserAccessToken = userAccessToken
+		}
+		if appId != "" || appSecret != "" || userAccessToken != "" {
+			
 			if err = config.WriteConfig2File(configPath); err != nil {
 				return err
 			}

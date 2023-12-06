@@ -10,24 +10,25 @@ import (
 	"github.com/Wsine/feishu2md/utils"
 )
 
-func getIdAndSecretFromEnv() (string, string) {
+func getEnvVars() (string, string, string) {
 	utils.LoadEnv()
 	appID := os.Getenv("FEISHU_APP_ID")
 	appSecret := os.Getenv("FEISHU_APP_SECRET")
-	return appID, appSecret
+	userAccessToken := os.Getenv("FEISHU_APP_USER_ACCESS_TOKEN")
+	return appID, appSecret, userAccessToken
 }
 
 func TestNewClient(t *testing.T) {
-	appID, appSecret := getIdAndSecretFromEnv()
-	c := core.NewClient(appID, appSecret, "feishu.cn")
+	appID, appSecret, userAccessToken := getEnvVars()
+	c := core.NewClient(appID, appSecret, userAccessToken, "feishu.cn")
 	if c == nil {
 		t.Errorf("Error creating DocClient")
 	}
 }
 
 func TestDownloadImage(t *testing.T) {
-	appID, appSecret := getIdAndSecretFromEnv()
-	c := core.NewClient(appID, appSecret, "feishu.cn")
+	appID, appSecret, userAccessToken := getEnvVars()
+	c := core.NewClient(appID, appSecret, userAccessToken, "feishu.cn")
 	imgToken := "boxcnA1QKPanfMhLxzF1eMhoArM"
 	filename, err := c.DownloadImage(
 		context.Background(),
@@ -47,8 +48,8 @@ func TestDownloadImage(t *testing.T) {
 }
 
 func TestGetDocxContent(t *testing.T) {
-	appID, appSecret := getIdAndSecretFromEnv()
-	c := core.NewClient(appID, appSecret, "feishu.cn")
+	appID, appSecret, userAccessToken := getEnvVars()
+	c := core.NewClient(appID, appSecret, userAccessToken, "feishu.cn")
 	docx, blocks, err := c.GetDocxContent(
 		context.Background(),
 		"doxcnXhd93zqoLnmVPGIPTy7AFe",
@@ -67,8 +68,8 @@ func TestGetDocxContent(t *testing.T) {
 }
 
 func TestGetWikiNodeInfo(t *testing.T) {
-	appID, appSecret := getIdAndSecretFromEnv()
-	c := core.NewClient(appID, appSecret, "feishu.cn")
+	appID, appSecret, userAccessToken := getEnvVars()
+	c := core.NewClient(appID, appSecret, userAccessToken, "feishu.cn")
 	const token = "wikcnLgRX9AMtvaB5x1cl57Yuah"
 	node, err := c.GetWikiNodeInfo(context.Background(), token)
 	if err != nil {

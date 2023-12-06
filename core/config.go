@@ -14,8 +14,9 @@ type Config struct {
 }
 
 type FeishuConfig struct {
-	AppId     string `json:"app_id"`
-	AppSecret string `json:"app_secret"`
+	AppId           string `json:"app_id"`
+	AppSecret       string `json:"app_secret"`
+	UserAccessToken string `json:"user_access_token"`
 }
 
 type OutputConfig struct {
@@ -25,11 +26,12 @@ type OutputConfig struct {
 	SkipImgDownload bool   `json:"skip_img_download"`
 }
 
-func NewConfig(appId, appSecret string) *Config {
+func NewConfig(appId, appSecret, userAccessToken string) *Config {
 	return &Config{
 		Feishu: FeishuConfig{
-			AppId:     appId,
-			AppSecret: appSecret,
+			AppId:           appId,
+			AppSecret:       appSecret,
+			UserAccessToken: userAccessToken,
 		},
 		Output: OutputConfig{
 			ImageDir:        "static",
